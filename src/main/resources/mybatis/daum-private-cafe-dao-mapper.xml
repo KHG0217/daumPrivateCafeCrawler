@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="sql.resources.daumprivatecafedao">
+	<insert id="insertArticle" parameterType="TBArticle">
+		<selectKey keyProperty="seq" resultType="long" order="BEFORE">
+			SELECT
+			${sequenceName}.NEXTVAL FROM dual
+		</selectKey>
+		INSERT /*+ APPEND */ INTO ${tableName} (
+		SEQ,ARTICLE_ID,SITE_ID_OLD,WRITER_ID,CRAWL_DATE,
+		TITLE,BODY,RT,REPLY_ID, REPLY_WRITER_ID,
+		RE,
+		ADDRESS, LAT, LNG, CREATE_DATE,
+		SITE_TYPE, VIA_URL,
+		ADDRESS_STATUS,MENTION,ARTICLE_ID_OLD,
+		URL, REPUTATION_TYPE,
+		SITE_SUB_TYPE, CONTENT_ID, ADDRESS2,
+		SITE_ID, SITE_CODE,
+		WRITER_NAME,COLLECTED_BY,RT_COUNT,
+		FOLLOWER_COUNT, SITE_NAME, PICTURE,SCREEN_NAME,SITE_CATEGORY, HIT_COUNT, 
+		LIKE_COUNT, COMMENT_COUNT)
+		VALUES (
+		#{seq,javaType=long,jdbcType=NUMERIC},
+		#{articleId},
+		#{siteCode,javaType=long,jdbcType=NUMERIC},
+		#{writerId},
+		TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),
+		#{title,javaType=string,jdbcType=VARCHAR},
+		#{body,javaType=string,jdbcType=VARCHAR},
+		#{rt,javaType=string,jdbcType=VARCHAR},
+		#{replyId,javaType=string,jdbcType=VARCHAR},
+		#{replyWriterId,javaType=string,jdbcType=VARCHAR},
+		#{re,javaType=string,jdbcType=VARCHAR},
+		#{address,javaType=string,jdbcType=VARCHAR},
+		#{lat,javaType=string,jdbcType=NUMERIC},
+		#{lng,javaType=string,jdbcType=NUMERIC},
+		#{createDate},
+		#{siteType,javaType=string,jdbcType=VARCHAR},
+		#{viaUrl,javaType=string,jdbcType=VARCHAR},
+		#{addressStatus,javaType=string,jdbcType=VARCHAR},
+		#{mention,javaType=string,jdbcType=VARCHAR},
+		#{articleIdOld,javaType=long,jdbcType=NUMERIC},
+		#{url,javaType=string,jdbcType=VARCHAR},
+		#{reputationType,javaType=string,jdbcType=VARCHAR},
+		#{siteSubType,javaType=string,jdbcType=VARCHAR},
+		#{contentId,javaType=string,jdbcType=VARCHAR},
+		#{address2,javaType=string,jdbcType=VARCHAR},
+		#{siteId,javaType=string,jdbcType=VARCHAR},
+		#{siteCode,javaType=long,jdbcType=NUMERIC},
+		#{writerName,javaType=string,jdbcType=VARCHAR},
+		#{collectedBy,javaType=string,jdbcType=VARCHAR},
+		#{rtCount,javaType=long,jdbcType=NUMERIC},
+		#{followerCount,javaType=long,jdbcType=NUMERIC},
+		#{siteName,javaType=string,jdbcType=VARCHAR},
+		#{picture,javaType=string,jdbcType=VARCHAR},
+		#{screenName,javaType=string,jdbcType=VARCHAR},
+		#{siteCategory,javaType=string,jdbcType=VARCHAR},
+		#{hitCount,javaType=long,jdbcType=NUMERIC},
+		#{likeCount,javaType=long,jdbcType=NUMERIC},
+		#{commentCount,javaType=long,jdbcType=NUMERIC}
+		)
+	</insert>
+	<select id="selectArticle" parameterType="TBArticle" 
+		resultType="TBArticle">
+		SELECT *
+		FROM ${tableName} 
+		WHERE 1 = 1 AND URL = #{url}
+	</select>
+</mapper>
