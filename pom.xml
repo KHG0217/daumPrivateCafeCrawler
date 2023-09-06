@@ -15,7 +15,7 @@
 		<springframework.version>4.0.1.RELEASE</springframework.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
-		<selenium.version>2.53.0</selenium.version>
+		<selenium.version>2.53.0</selenium.version> <!-- 2.44 버전 테스트후 변경 -->
 		<htmlunit.version>2.22</htmlunit.version>
 		<jedis.version>2.3.0</jedis.version>
 		<springdata.version>1.4.0.RELEASE</springdata.version>
@@ -266,6 +266,12 @@
 			<artifactId>sns-crawler</artifactId>
 			<version>3.0.0-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>com.slack.api</groupId>
+		    <artifactId>slack-api-client</artifactId>
+		    <version>1.30.0</version>
+		 </dependency>
 	</dependencies>
 
 	<build>

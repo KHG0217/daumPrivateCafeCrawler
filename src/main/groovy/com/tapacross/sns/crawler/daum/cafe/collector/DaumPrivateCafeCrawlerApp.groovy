@@ -40,8 +40,10 @@ import java.nio.file.Paths
  */
 @TypeChecked
 class DaumPrivateCafeCrawlerApp {
-	private static final String DAUM_PRIVATE_CAFE_CRAWLER = "DaumPrivateCafeCrawler:"
-	private final String REDIS_CAFE_CRAWL_URL_KEY_PREFIX = "crawlurl:DaumCafe:"
+	private static final String DAUM_PRIVATE_CAFE_CRAWLER = "DaumPrivateCafeCrawler:" 
+	private final String REDIS_CAFE_CRAWL_URL_KEY_PREFIX = "crawlurl:cafe:"
+	// daumcafe:crawldata
+	private final String REDIS_CAFE_CRAWL_DATA_KEY_PREFIX = "crawlstatus:cafe"
 	private final int EXCEPTION_WAIT_TIME = 3 * 1000
 	private final int CRAWL_WAIT_TIME = 1 * 1000
 	
@@ -58,6 +60,7 @@ class DaumPrivateCafeCrawlerApp {
 	private String LOGIN_ID = ""
 	private String LOGIN_PW = ""
 	private String DRIVER_PATH = ""
+	private String REDIS_DATA_KEY = ""
 	private static Logger logger = LoggerFactory.getLogger(DaumPrivateCafeCrawlerApp.class)
 	private IRedisService redisService
 	private CrawlerService crawlerService
@@ -95,9 +98,11 @@ class DaumPrivateCafeCrawlerApp {
 		if (accountType == ACCOUNT_TYPE1_VAL) {
 			this.crawlCafeUrls = new BufferedReader(new InputStreamReader(DaumPrivateCafeCrawlerApp.class
 				.getResourceAsStream("/data/user1-cafe-urls.txt"))).readLines()
+			this.REDIS_DATA_KEY = REDIS_CAFE_CRAWL_DATA_KEY_PREFIX + userId
 		} else if(accountType == ACCOUNT_TYPE2_VAL) {
 			this.crawlCafeUrls = new BufferedReader(new InputStreamReader(DaumPrivateCafeCrawlerApp.class
 				.getResourceAsStream("/data/user2-cafe-urls.txt"))).readLines()
+			this.REDIS_DATA_KEY = REDIS_CAFE_CRAWL_DATA_KEY_PREFIX + userId
 		} else {
 			logger.error(DAUM_PRIVATE_CAFE_CRAWLER + " Invalid account type.")
 			logger.error(DAUM_PRIVATE_CAFE_CRAWLER + " System exit.")
@@ -151,7 +156,7 @@ class DaumPrivateCafeCrawlerApp {
 	
 			def newSnsContents = newArticles.collect {
 				try {
-					def snsContent = parser.parseContent(it)
+					def snsContent = parser.parseContent(it, LOGIN_ID, LOGIN_PW)
 					
 					if (!validateFields(snsContent)) {
 						logger.error("$DAUM_PRIVATE_CAFE_CRAWLER Invalid content. url:$snsContent.url")
@@ -164,7 +169,7 @@ class DaumPrivateCafeCrawlerApp {
 					sleep(CRAWL_WAIT_TIME)
 				}
 			}.findAll { snsContent -> snsContent != null } as List<SNSContent2>
-						
+					
 			def filledSnsConTents = newSnsContents.collectNested {
 				SNSContent2 it ->
 				it.siteName = crawlSite.siteName
@@ -230,7 +235,11 @@ class DaumPrivateCafeCrawlerApp {
 	
 	private void addVisitedUrl(String articleUrl) {
 		def redisCrawlUrlKey = "$REDIS_CAFE_CRAWL_URL_KEY_PREFIX$articleUrl"
-		redisService.addRedisValue(redisCrawlUrlKey, "1", 1)		
+		redisService.addRedisValue(redisCrawlUrlKey, "1", 1)	
+		
+		// 자빅스 알림을 위해 key를 계속 덮어 씌운다.	
+		redisService.addRedisValue(REDIS_DATA_KEY, "1", 1)
+		redisService.setKeyExpireForMin(REDIS_DATA_KEY, 10) // 키 유효시간을 10분으로 재설정
 	}
 	
 	/**
