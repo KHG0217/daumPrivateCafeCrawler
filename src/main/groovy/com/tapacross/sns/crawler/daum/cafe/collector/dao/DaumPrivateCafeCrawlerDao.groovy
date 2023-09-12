@@ -7,12 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate
 import org.springframework.dao.DataAccessException
 import org.springframework.orm.hibernate3.HibernateTemplate
 import org.springframework.stereotype.Repository
-
-import com.tapacross.sns.entity.ITBArticle
-import com.tapacross.sns.entity.TBArticle
-import com.tapacross.sns.entity.TBCrawlSite2
-import com.tapacross.sns.entity.crawl.TBCrawlCycle
-
+import com.tapacross.sns.crawler.daum.cafe.entity.ITBArticle
+import com.tapacross.sns.crawler.daum.cafe.entity.TBArticle
+import com.tapacross.sns.crawler.daum.cafe.entity.TBCrawlCycle
+import com.tapacross.sns.crawler.daum.cafe.entity.TBCrawlSite2
 import groovy.transform.TypeChecked
 
 interface CrawlerDao {

@@ -8,7 +8,7 @@ import groovy.transform.TypeChecked
 
 @TypeChecked
 class DaumPrivateCafeCrawlerAppTest {
-	private final String LOGIN_ID = "gurrbrnt12@naver.com"//남성계정
+	private final String LOGIN_ID = "23911116@sjcu.ac.kr"//남성계정
 	private final String LOGIN_PW = "wlsan4807!"
 	
 	@Test

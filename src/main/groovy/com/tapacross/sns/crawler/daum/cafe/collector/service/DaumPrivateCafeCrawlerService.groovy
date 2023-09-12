@@ -6,11 +6,10 @@ import org.springframework.stereotype.Controller
 import org.springframework.stereotype.Service
 
 import com.tapacross.sns.crawler.daum.cafe.collector.dao.CrawlerDao
-import com.tapacross.sns.entity.ITBArticle
-import com.tapacross.sns.entity.TBArticle
-import com.tapacross.sns.entity.TBCrawlSite2
-import com.tapacross.sns.entity.crawl.TBCrawlCycle
-
+import com.tapacross.sns.crawler.daum.cafe.entity.ITBArticle
+import com.tapacross.sns.crawler.daum.cafe.entity.TBArticle
+import com.tapacross.sns.crawler.daum.cafe.entity.TBCrawlCycle
+import com.tapacross.sns.crawler.daum.cafe.entity.TBCrawlSite2
 import groovy.transform.TypeChecked
 
 interface CrawlerService {
